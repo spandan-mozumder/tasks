@@ -5,6 +5,7 @@ import Tasks from "@/components/tasks";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import React, { useState } from "react";
 
 const Page = () => {
@@ -47,9 +48,15 @@ const Page = () => {
 
   return (
     <div>
-      <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 flex justify-between items-center">
-        Save Your Tasks on the Chain <ModeToggle />
-      </h2>
+      <div className="flex justify-between items-center">
+        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+          Save Your Tasks on the Chain
+        </h2>
+        <div className="flex gap-4 items-center justify-center">
+          <ModeToggle />
+          <WalletMultiButton />
+        </div>
+      </div>
 
       <div className="p-10 flex flex-col gap-5">
         <Card className="gap-10 flex flex-row p-5">

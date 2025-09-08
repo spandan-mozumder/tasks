@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { Check, Pencil, Trash, X } from "lucide-react";
 import { Input } from "./ui/input";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@radix-ui/react-tooltip";
 
 type TasksProps = {
   incomplete?: string[];
@@ -54,45 +59,82 @@ const Tasks: React.FC<TasksProps> = ({
                   onChange={(e) => setEditingText(e.target.value)}
                   autoFocus
                 />
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  onClick={() => saveEdit(idx)}
-                >
-                  <Check />
-                </Button>
-                <Button size="sm" variant="outline" onClick={cancelEdit}>
-                  <X />
-                </Button>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="outline">Cancel</Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => saveEdit(idx)}
+                    >
+                      <Check />
+                    </Button>
+                  </TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="outline">Cancel</Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <Button size="sm" variant="outline" onClick={cancelEdit}>
+                      <X />
+                    </Button>
+                  </TooltipContent>
+                </Tooltip>
               </div>
             ) : (
               <>
                 <p className="flex-1">{task}</p>
                 <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    onClick={() => onComplete(idx)}
-                  >
-                    <Check />
-                  </Button>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant="outline">Mark As Complete</Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={() => onComplete(idx)}
+                      >
+                        <Check />
+                      </Button>
+                    </TooltipContent>
+                  </Tooltip>
 
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    onClick={() => startEditing(idx, task)}
-                  >
-                    <Pencil />
-                  </Button>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant="outline">Edit</Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={() => startEditing(idx, task)}
+                      >
+                        <Pencil />
+                      </Button>
+                    </TooltipContent>
+                  </Tooltip>
 
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="text-red-400 hover:text-red-600"
-                    onClick={() => onDelete(idx, false)}
-                  >
-                    <Trash />
-                  </Button>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant="outline">Delete</Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-red-400 hover:text-red-600"
+                        onClick={() => onDelete(idx, false)}
+                      >
+                        <Trash />
+                      </Button>
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
               </>
             )}
@@ -106,14 +148,23 @@ const Tasks: React.FC<TasksProps> = ({
             className="flex items-center justify-between gap-10 opacity-80"
           >
             <p className="flex-1 text-muted-foreground">{task}</p>
-            <Button
-              size="sm"
-              variant="outline"
-              className="text-red-400 hover:text-red-600"
-              onClick={() => onDelete(idx, true)}
-            >
-              <Trash />
-            </Button>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="outline">Delete</Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="text-red-400 hover:text-red-600"
+                  onClick={() => onDelete(idx, true)}
+                >
+                  <Trash />
+                </Button>
+              </TooltipContent>
+            </Tooltip>
+            
           </div>
         ))}
 
