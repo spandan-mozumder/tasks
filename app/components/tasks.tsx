@@ -6,6 +6,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
+  TooltipProvider,
 } from "@radix-ui/react-tooltip";
 
 type TasksProps = {
@@ -45,13 +46,11 @@ const Tasks: React.FC<TasksProps> = ({
   };
 
   return (
-    <div className="p-5 space-y-4">
+    <TooltipProvider>
+      <div className="p-3 sm:p-5 space-y-4">
       {incomplete.length > 0 &&
         incomplete.map((task, idx) => (
-          <div
-            key={`in-${idx}`}
-            className="flex items-center justify-between gap-10"
-          >
+          <div key={`in-${idx}`} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-10">
             {editingIndex === idx ? (
               <div className="flex items-center gap-2 flex-1">
                 <Input
@@ -88,8 +87,8 @@ const Tasks: React.FC<TasksProps> = ({
               </div>
             ) : (
               <>
-                <p className="flex-1">{task}</p>
-                <div className="flex gap-2">
+                <p className="flex-1 break-words">{task}</p>
+                <div className="flex gap-2 flex-wrap">
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button variant="outline">Mark As Complete</Button>
@@ -143,11 +142,8 @@ const Tasks: React.FC<TasksProps> = ({
 
       {completed.length > 0 &&
         completed.map((task, idx) => (
-          <div
-            key={`done-${idx}`}
-            className="flex items-center justify-between gap-10 opacity-80"
-          >
-            <p className="flex-1 text-muted-foreground">{task}</p>
+          <div key={`done-${idx}`} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-10 opacity-80">
+            <p className="flex-1 text-muted-foreground break-words">{task}</p>
 
             <Tooltip>
               <TooltipTrigger asChild>
@@ -171,7 +167,8 @@ const Tasks: React.FC<TasksProps> = ({
       {incomplete.length === 0 && completed.length === 0 && (
         <p className="text-sm text-muted-foreground">No tasks</p>
       )}
-    </div>
+      </div>
+    </TooltipProvider>
   );
 };
 

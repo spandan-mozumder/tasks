@@ -1,0 +1,41 @@
+"use client"
+
+import React, { useMemo } from "react";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import {
+  ConnectionProvider,
+  WalletProvider,
+} from "@solana/wallet-adapter-react";
+import {
+  WalletModalProvider,
+} from "@solana/wallet-adapter-react-ui";
+import { PhantomWalletAdapter, SolflareWalletAdapter } from "@solana/wallet-adapter-wallets";
+import { clusterApiUrl } from "@solana/web3.js";
+import "@solana/wallet-adapter-react-ui/styles.css";
+
+export function WalletConnectionProvider({
+  children
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const network = WalletAdapterNetwork.Devnet;
+
+  const endpoint = useMemo(() => {
+    if (network === WalletAdapterNetwork.Devnet) {
+      return "https://smart-multi-breeze.solana-devnet.quiknode.pro/c7ff6cd162bb468fb6bb1e01c1d9b3e6718dd4ad/";
+    }
+    return clusterApiUrl(network);
+  }, [network]);
+
+  const wallets = useMemo(() => [new PhantomWalletAdapter(), new SolflareWalletAdapter()], []);
+
+  return (
+    <ConnectionProvider endpoint={endpoint}>
+      <WalletProvider wallets={wallets} autoConnect>
+        <WalletModalProvider>
+          <div className="px-50 py-10">{children}</div>
+        </WalletModalProvider>
+      </WalletProvider>
+    </ConnectionProvider>
+  );
+}

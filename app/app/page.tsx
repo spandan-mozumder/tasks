@@ -7,43 +7,30 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import React, { useState } from "react";
+import { useTodo } from "@/hooks/todo";
 
 const Page = () => {
-  const [incompleteTasks, setIncompleteTasks] = useState<string[]>([]);
-  const [completedTasks, setCompletedTasks] = useState<string[]>([]);
+  const { incomplete, completed, addTodo, markTodo, removeTodo, initializeUser, fetchTodos, loading } = useTodo();
   const [newTask, setNewTask] = useState<string>("");
 
-  const handleAddTask = () => {
-    if (newTask.trim() !== "") {
-      setIncompleteTasks((prev) => [...prev, newTask.trim()]);
-      setNewTask("");
-    }
+  const handleAddTask = async () => {
+    if (newTask.trim() === "") return;
+    await addTodo(newTask.trim());
+    setNewTask("");
   };
 
-  const handleCompleteTask = (index: number) => {
-    setIncompleteTasks((prev) => {
-      const task = prev[index];
-      if (!task) return prev;
-      const next = prev.filter((_, i) => i !== index);
-      setCompletedTasks((cprev) =>
-        cprev.includes(task) ? cprev : [...cprev, task]
-      );
-      return next;
-    });
+  const handleCompleteTask = async (index: number) => {
+    // mark on chain by index (assumes ordering matches)
+    await markTodo(index);
   };
 
   const handleEditTask = (index: number, updated: string) => {
-    setIncompleteTasks((prev) =>
-      prev.map((t, i) => (i === index ? updated : t))
-    );
+    // Editing content in-place is not implemented on-chain in the program.
+    // Keep it local for now. Consider adding an `update_todo` instruction.
   };
 
-  const handleDeleteTask = (index: number, completed?: boolean) => {
-    if (completed) {
-      setCompletedTasks((prev) => prev.filter((_, i) => i !== index));
-    } else {
-      setIncompleteTasks((prev) => prev.filter((_, i) => i !== index));
-    }
+  const handleDeleteTask = async (index: number, completed?: boolean) => {
+    await removeTodo(index);
   };
 
   return (
@@ -58,14 +45,15 @@ const Page = () => {
         </div>
       </div>
 
-      <div className="p-10 flex flex-col gap-5">
-        <Card className="gap-10 flex flex-row p-5">
+      <div className="p-6 sm:p-10 flex flex-col gap-5">
+        <Card className="gap-4 flex flex-col sm:flex-row p-4 sm:p-5 items-stretch">
           <Input
             placeholder="Add a new task..."
             value={newTask}
             onChange={(e) => setNewTask(e.target.value)}
+            className="min-w-0 flex-1"
           />
-          <Button className="cursor-pointer" onClick={handleAddTask}>
+          <Button className="mt-3 sm:mt-0 sm:ml-3 w-full sm:w-auto" onClick={handleAddTask}>
             Add
           </Button>
         </Card>
@@ -75,7 +63,7 @@ const Page = () => {
         </h4>
 
         <Tasks
-          incomplete={incompleteTasks}
+          incomplete={incomplete}
           onComplete={handleCompleteTask}
           onEdit={handleEditTask}
           onDelete={handleDeleteTask}
@@ -85,7 +73,7 @@ const Page = () => {
           Tasks You&apos;ve Completed
         </h4>
 
-        <Tasks completed={completedTasks} onDelete={handleDeleteTask} />
+  <Tasks completed={completed} onDelete={handleDeleteTask} />
       </div>
     </div>
   );
