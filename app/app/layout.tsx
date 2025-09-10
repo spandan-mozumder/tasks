@@ -38,7 +38,7 @@ export default function RootLayout({
         >
           <WalletConnectionProvider>
             <Toaster />
-            <div className="px-50 py-10">{children}</div>
+            {children}
           </WalletConnectionProvider>
         </ThemeProvider>
       </body>

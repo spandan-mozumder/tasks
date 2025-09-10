@@ -8,6 +8,7 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from "@radix-ui/react-tooltip";
+import ConfirmDialog from "./ui/confirm-dialog";
 
 type TasksProps = {
   incomplete?: string[];
@@ -15,6 +16,7 @@ type TasksProps = {
   onComplete?: (index: number) => void;
   onEdit?: (index: number, newText: string) => void;
   onDelete?: (index: number, completed?: boolean) => void;
+  processing?: boolean;
 };
 
 const Tasks: React.FC<TasksProps> = ({
@@ -23,9 +25,12 @@ const Tasks: React.FC<TasksProps> = ({
   onComplete = () => {},
   onEdit = () => {},
   onDelete = () => {},
+  processing = false,
 }) => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingText, setEditingText] = useState<string>("");
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openCompleted, setOpenCompleted] = useState<boolean | undefined>(false);
 
   const startEditing = (index: number, text: string) => {
     setEditingIndex(index);
@@ -61,28 +66,20 @@ const Tasks: React.FC<TasksProps> = ({
 
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="outline">Cancel</Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      onClick={() => saveEdit(idx)}
-                    >
-                      <Check />
+                    <Button variant="ghost" size="sm" onClick={() => saveEdit(idx)} aria-label="Save edit">
+                      <Check className="h-4 w-4" />
                     </Button>
-                  </TooltipContent>
+                  </TooltipTrigger>
+                  <TooltipContent side="top">Save</TooltipContent>
                 </Tooltip>
 
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="outline">Cancel</Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <Button size="sm" variant="outline" onClick={cancelEdit}>
-                      <X />
+                    <Button variant="ghost" size="sm" onClick={cancelEdit} aria-label="Cancel edit">
+                      <X className="h-4 w-4" />
                     </Button>
-                  </TooltipContent>
+                  </TooltipTrigger>
+                  <TooltipContent side="top">Cancel</TooltipContent>
                 </Tooltip>
               </div>
             ) : (
@@ -91,48 +88,37 @@ const Tasks: React.FC<TasksProps> = ({
                 <div className="flex gap-2 flex-wrap">
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button variant="outline">Mark As Complete</Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        onClick={() => onComplete(idx)}
-                      >
-                        <Check />
+                      <Button variant="ghost" size="sm" onClick={() => onComplete(idx)} aria-label="Mark complete" disabled={processing}>
+                        <Check className="h-4 w-4" />
                       </Button>
-                    </TooltipContent>
+                    </TooltipTrigger>
+                    <TooltipContent side="top">Mark complete</TooltipContent>
                   </Tooltip>
 
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button variant="outline">Edit</Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        onClick={() => startEditing(idx, task)}
-                      >
-                        <Pencil />
+                      <Button variant="ghost" size="sm" onClick={() => startEditing(idx, task)} aria-label="Edit task" disabled={processing}>
+                        <Pencil className="h-4 w-4" />
                       </Button>
-                    </TooltipContent>
+                    </TooltipTrigger>
+                    <TooltipContent side="top">Edit</TooltipContent>
                   </Tooltip>
 
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button variant="outline">Delete</Button>
+                      <ConfirmDialog
+                        trigger={({ disabled }) => (
+                          <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-600" onClick={() => { setOpenIndex(idx); setOpenCompleted(false); }} aria-label="Delete task" disabled={disabled}>
+                            <Trash className="h-4 w-4" />
+                          </Button>
+                        )}
+                        title="Delete task?"
+                        description="This will permanently remove the task on-chain. Are you sure?"
+                        onConfirm={() => { if (openIndex !== null) onDelete(openIndex, false); }}
+                        disabled={processing}
+                      />
                     </TooltipTrigger>
-                    <TooltipContent>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="text-red-400 hover:text-red-600"
-                        onClick={() => onDelete(idx, false)}
-                      >
-                        <Trash />
-                      </Button>
-                    </TooltipContent>
+                    <TooltipContent side="top">Delete</TooltipContent>
                   </Tooltip>
                 </div>
               </>
@@ -147,18 +133,19 @@ const Tasks: React.FC<TasksProps> = ({
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="outline">Delete</Button>
+                <ConfirmDialog
+                  trigger={({ disabled }) => (
+                    <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-600" onClick={() => { setOpenIndex(idx); setOpenCompleted(true); }} aria-label="Delete completed" disabled={disabled}>
+                      <Trash className="h-4 w-4" />
+                    </Button>
+                  )}
+                  title="Delete task?"
+                  description="This will permanently remove the completed task on-chain. Are you sure?"
+                  onConfirm={() => { if (openIndex !== null) onDelete(openIndex, true); }}
+                  disabled={processing}
+                />
               </TooltipTrigger>
-              <TooltipContent>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="text-red-400 hover:text-red-600"
-                  onClick={() => onDelete(idx, true)}
-                >
-                  <Trash />
-                </Button>
-              </TooltipContent>
+              <TooltipContent side="top">Delete</TooltipContent>
             </Tooltip>
             
           </div>

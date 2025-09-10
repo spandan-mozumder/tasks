@@ -118,5 +118,28 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-image: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg-gradient-start: rgba(250, 250, 255, 0.6);
+    --bg-gradient-end: rgba(245, 246, 255, 0.4);
+  }
+  body {
+    background-image: linear-gradient(180deg, var(--bg-gradient-start), var(--bg-gradient-end));
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .dark {
+    --bg-gradient-start: rgba(10, 12, 20, 0.4);
+    --bg-gradient-end: rgba(16, 18, 25, 0.35);
+  }
+  .dark body, .dark {
+    background-image: linear-gradient(180deg, var(--bg-gradient-start), var(--bg-gradient-end));
   }
 }
