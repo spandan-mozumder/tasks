@@ -28,12 +28,10 @@ const Tasks: React.FC<TasksProps> = ({
   processing = false,
 }: TasksProps) => {
   const safeOnComplete = (i: number) => onComplete?.(i);
-  const safeOnEdit = (i: number, t: string) => onEdit?.(i, t);
   const safeOnDelete = (i: number, c?: boolean) => onDelete?.(i, c);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingText, setEditingText] = useState<string>("");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const [openCompleted, setOpenCompleted] = useState<boolean | undefined>(false);
 
   const startEditing = (index: number, text: string) => {
     setEditingIndex(index);
@@ -111,7 +109,7 @@ const Tasks: React.FC<TasksProps> = ({
                     <TooltipTrigger asChild>
                       <ConfirmDialog
                         trigger={({ disabled }) => (
-                          <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-600" onClick={() => { setOpenIndex(idx); setOpenCompleted(false); }} aria-label="Delete task" disabled={disabled}>
+                          <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-600" onClick={() => { setOpenIndex(idx); }} aria-label="Delete task" disabled={disabled}>
                             <Trash className="h-4 w-4" />
                           </Button>
                         )}
@@ -138,7 +136,7 @@ const Tasks: React.FC<TasksProps> = ({
               <TooltipTrigger asChild>
                 <ConfirmDialog
                   trigger={({ disabled }) => (
-                    <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-600" onClick={() => { setOpenIndex(idx); setOpenCompleted(true); }} aria-label="Delete completed" disabled={disabled}>
+                    <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-600" onClick={() => { setOpenIndex(idx); }} aria-label="Delete completed" disabled={disabled}>
                       <Trash className="h-4 w-4" />
                     </Button>
                   )}

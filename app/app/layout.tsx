@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
   <body className={`antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <WalletConnectionProvider children={
+          <WalletConnectionProvider>
             <>
               <Toaster />
               <div className="bg-gradient-hero min-h-screen flex flex-col">
@@ -42,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Footer />
               </div>
             </>
-          } />
+          </WalletConnectionProvider>
         </ThemeProvider>
       </body>
     </html>

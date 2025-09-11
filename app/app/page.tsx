@@ -1,18 +1,16 @@
 "use client";
 
-import { ModeToggle } from "@/components/mode-toggle";
 import Tasks from "@/components/tasks";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import React, { useState } from "react";
 import { useTodo } from "@/hooks/todo";
 import { Plus } from "lucide-react";
 import OverlayLoader from "@/components/ui/overlay-loader";
 
 const Page = () => {
-  const { incomplete, completed, addTodo, markTodo, removeTodo, editTodo, initializeUser, fetchTodos, loading, processing } = useTodo();
+  const { incomplete, completed, addTodo, markTodo, removeTodo, editTodo, loading, processing } = useTodo();
   const [newTask, setNewTask] = useState<string>("");
 
   const handleAddTask = async () => {

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { ModeToggle } from "@/components/mode-toggle";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
@@ -10,7 +11,7 @@ export default function Header() {
       <div className="mx-auto max-w-5xl flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl overflow-hidden shadow-md flex items-center justify-center bg-white/5">
-            <img src="/favicon.ico" alt="Tasks" className="w-full h-full object-cover" />
+            <Image src="/favicon.ico" alt="Tasks" width={40} height={40} className="object-cover" />
           </div>
           <div>
             <h1 className="text-lg font-semibold">Tasks</h1>
