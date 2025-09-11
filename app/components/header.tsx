@@ -10,7 +10,7 @@ export default function Header() {
     <header className="w-full py-4 px-6 sm:px-8 border-b border-transparent/10 backdrop-blur-sm">
       <div className="mx-auto max-w-5xl flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl overflow-hidden shadow-md flex items-center justify-center bg-white/5">
+          <div className="w-10 h-10 rounded-full overflow-hidden shadow-md flex items-center justify-center bg-white/5">
             <Image src="/favicon.ico" alt="Tasks" width={40} height={40} className="object-cover" />
           </div>
           <div>
