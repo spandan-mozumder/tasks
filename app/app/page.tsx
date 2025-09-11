@@ -25,8 +25,10 @@ const Page = () => {
     await markTodo(index);
   };
 
-  const handleEditTask = (index: number, updated: string) => {
-    editTodo(index, updated);
+  const handleEditTask = (index: number, updated?: string) => {
+    if (typeof updated === "string") {
+      editTodo(index, updated);
+    }
   };
 
   const handleDeleteTask = async (index: number, completed?: boolean) => {
@@ -36,18 +38,9 @@ const Page = () => {
   return (
     <div>
       <OverlayLoader visible={loading || processing} />
-      <div className="mx-auto max-w-3xl p-10 sm:px-6 lg:px-8">
-  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <h2 className="scroll-m-20 border-b pb-2 text-2xl sm:text-3xl font-semibold tracking-tight first:mt-0">
-          Save Your Tasks on the Chain
-        </h2>
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-          <ModeToggle />
-          <WalletMultiButton />
-        </div>
-      </div>
+      <div className="mx-auto max-w-5xl p-10 sm:px-6 lg:px-8 fade-in-up">
 
-      <div className="p-6 sm:p-10 flex flex-col gap-5">
+  <div className="p-6 sm:p-10 flex flex-col gap-5">
         <Card className="gap-4 flex flex-col sm:flex-row p-4 sm:p-5 items-stretch">
           <Input
             placeholder="Add a new task..."

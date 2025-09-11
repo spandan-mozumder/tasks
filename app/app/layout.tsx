@@ -1,45 +1,48 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import React from "react";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-providers";
 import { WalletConnectionProvider } from "@/components/wallet-provider";
 import { Toaster } from "@/components/ui/sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// Font variables are defined via global CSS; next/font imports removed to avoid env issues
 
-export const metadata: Metadata = {
-  title: "Task",
-  description: "Save your tasks on the Solana blockchain",
+export const metadata = {
+  title: "Tasks — Save your tasks on Solana",
+  description: "Save your tasks on the Solana blockchain — private, verifiable task storage.",
+  keywords: ["tasks", "solana", "todo", "blockchain", "web3", "productivity"],
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <WalletConnectionProvider>
-            <Toaster />
-            {children}
-          </WalletConnectionProvider>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Tasks",
+              url: "https://example.com",
+              description: "Save your tasks on the Solana blockchain — private, verifiable task storage.",
+            }),
+          }}
+        />
+      </head>
+  <body className={`antialiased`}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <WalletConnectionProvider children={
+            <>
+              <Toaster />
+              <div className="bg-gradient-hero min-h-screen flex flex-col">
+                <Header />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </div>
+            </>
+          } />
         </ThemeProvider>
       </body>
     </html>

@@ -22,11 +22,14 @@ type TasksProps = {
 const Tasks: React.FC<TasksProps> = ({
   incomplete = [],
   completed = [],
-  onComplete = () => {},
-  onEdit = () => {},
-  onDelete = () => {},
+  onComplete, 
+  onEdit,
+  onDelete,
   processing = false,
-}) => {
+}: TasksProps) => {
+  const safeOnComplete = (i: number) => onComplete?.(i);
+  const safeOnEdit = (i: number, t: string) => onEdit?.(i, t);
+  const safeOnDelete = (i: number, c?: boolean) => onDelete?.(i, c);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingText, setEditingText] = useState<string>("");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -39,7 +42,7 @@ const Tasks: React.FC<TasksProps> = ({
 
   const saveEdit = (index: number) => {
     if (editingText.trim() !== "") {
-      onEdit(index, editingText.trim());
+      onEdit?.(index, editingText.trim());
     }
     setEditingIndex(null);
     setEditingText("");
@@ -52,15 +55,15 @@ const Tasks: React.FC<TasksProps> = ({
 
   return (
     <TooltipProvider>
-      <div className="p-3 sm:p-5 space-y-4">
+      <div className="p-3 sm:p-5 space-y-4 fade-in-up">
       {incomplete.length > 0 &&
         incomplete.map((task, idx) => (
-          <div key={`in-${idx}`} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-10">
+          <div key={`in-${idx}`} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-10 transition-transform hover:scale-[1.01]">
             {editingIndex === idx ? (
               <div className="flex items-center gap-2 flex-1">
                 <Input
                   value={editingText}
-                  onChange={(e) => setEditingText(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditingText(e.target.value)}
                   autoFocus
                 />
 
@@ -86,14 +89,14 @@ const Tasks: React.FC<TasksProps> = ({
               <>
                 <p className="flex-1 break-words">{task}</p>
                 <div className="flex gap-2 flex-wrap">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="ghost" size="sm" onClick={() => onComplete(idx)} aria-label="Mark complete" disabled={processing}>
-                        <Check className="h-4 w-4" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent side="top">Mark complete</TooltipContent>
-                  </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button variant="ghost" size="sm" onClick={() => safeOnComplete(idx)} aria-label="Mark complete" disabled={processing}>
+                          <Check className="h-4 w-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent side="top">Mark complete</TooltipContent>
+                    </Tooltip>
 
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -114,7 +117,7 @@ const Tasks: React.FC<TasksProps> = ({
                         )}
                         title="Delete task?"
                         description="This will permanently remove the task on-chain. Are you sure?"
-                        onConfirm={() => { if (openIndex !== null) onDelete(openIndex, false); }}
+                        onConfirm={() => { if (openIndex !== null) safeOnDelete(openIndex, false); }}
                         disabled={processing}
                       />
                     </TooltipTrigger>
@@ -141,7 +144,7 @@ const Tasks: React.FC<TasksProps> = ({
                   )}
                   title="Delete task?"
                   description="This will permanently remove the completed task on-chain. Are you sure?"
-                  onConfirm={() => { if (openIndex !== null) onDelete(openIndex, true); }}
+                        onConfirm={() => { if (openIndex !== null) onDelete?.(openIndex, true); }}
                   disabled={processing}
                 />
               </TooltipTrigger>
