@@ -21,12 +21,16 @@ type ConfirmDialogProps = {
   disabled?: boolean;
 };
 
-export default function ConfirmDialog({ trigger, title = "Are you sure?", description = "This action cannot be undone.", onConfirm, disabled = false }: ConfirmDialogProps) {
+export default function ConfirmDialog({
+  trigger,
+  title = "Are you sure?",
+  description = "This action cannot be undone.",
+  onConfirm,
+  disabled = false,
+}: ConfirmDialogProps) {
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
-  {trigger({ disabled })}
-      </AlertDialogTrigger>
+      <AlertDialogTrigger asChild>{trigger({ disabled })}</AlertDialogTrigger>
 
       <AlertDialogContent>
         <AlertDialogHeader>

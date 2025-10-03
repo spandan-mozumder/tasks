@@ -11,11 +11,19 @@ export default function Header() {
       <div className="mx-auto max-w-5xl flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl overflow-hidden shadow-md flex items-center justify-center bg-white/5">
-            <Image src="/favicon.ico" alt="Tasks" width={40} height={40} className="object-cover" />
+            <Image
+              src="/favicon.ico"
+              alt="Tasks"
+              width={40}
+              height={40}
+              className="object-cover"
+            />
           </div>
           <div>
             <h1 className="text-lg font-semibold">Tasks</h1>
-            <p className="text-xs text-muted-foreground">Save your tasks on Solana</p>
+            <p className="text-xs text-muted-foreground">
+              Save your tasks on Solana
+            </p>
           </div>
         </div>
 

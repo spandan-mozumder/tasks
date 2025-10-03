@@ -11,11 +11,16 @@ import Footer from "@/components/footer";
 
 export const metadata = {
   title: "Tasks — Save your tasks on Solana",
-  description: "Save your tasks on the Solana blockchain — private, verifiable task storage.",
+  description:
+    "Save your tasks on the Solana blockchain — private, verifiable task storage.",
   keywords: ["tasks", "solana", "todo", "blockchain", "web3", "productivity"],
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -26,13 +31,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "@type": "WebSite",
               name: "Tasks",
               url: "https://example.com",
-              description: "Save your tasks on the Solana blockchain — private, verifiable task storage.",
+              description:
+                "Save your tasks on the Solana blockchain — private, verifiable task storage.",
             }),
           }}
         />
       </head>
-  <body className={`antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <body className={`antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <WalletConnectionProvider>
             <>
               <Toaster />

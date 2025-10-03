@@ -49,6 +49,7 @@ npm run dev
 Open http://localhost:3000 to view the app.
 
 Notes:
+
 - If `npm install` fails with registry/tarball errors, try:
 
 ```bash
@@ -118,7 +119,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
       - run: cd app && npm ci
       - run: cd app && npm run build
       - run: cd app && npm run lint
@@ -143,10 +144,12 @@ This repository does not contain a license file. Add a `LICENSE` if you intend t
 ---
 
 If you'd like, I can also:
+
 - Add a GitHub Actions workflow file to `.github/workflows/ci.yml`.
 - Add `turbopack.root` to `next.config.js` to silence the workspace-root warning.
 
 Tell me which of those you'd like and I'll add them.
+
 # tasks
 
 A small Next.js + TypeScript frontend paired with Solana Anchor programs for simple task management. This repository contains a modern React (Next.js app-router) frontend in `app/` and on-chain programs/resources under `programs/` and `tests/`.
@@ -187,6 +190,7 @@ Prerequisites: Node.js (LTS recommended), npm.
 Visit http://localhost:3000 to view the site.
 
 Notes:
+
 - If `npm install` fails due to registry/tarball issues, try adding or adjusting package overrides in `app/package.json` (for example pinning problematic versions) and run:
 
   npm install --legacy-peer-deps
@@ -197,8 +201,8 @@ Notes:
 
 From `app/`:
 
-  npm run build
-  npm run start
+npm run build
+npm run start
 
 ## What changed (recent frontend improvements)
 

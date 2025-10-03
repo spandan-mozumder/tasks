@@ -30,7 +30,7 @@ export function WalletConnectionProvider({
 
   const wallets = useMemo(
     () => [new PhantomWalletAdapter(), new SolflareWalletAdapter()],
-    []
+    [],
   );
 
   return (
